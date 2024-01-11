@@ -52,11 +52,18 @@ namespace DiplomaThesisDigitalization.Controllers
             return Ok();
         }
         [HttpPost("mentor")]
-        public async Task<ActionResult<User>> CreateMentor([FromQuery] CreateMentorDTO mentorDTO)
+        public async Task<ActionResult<User>> CreateMentor([FromBody] CreateMentorDTO mentorDTO)
         {
             await _userService.AddMentor(mentorDTO);
             return Ok();
         }
+         [HttpGet("mentors")]
+        public async Task<ActionResult> GetMentors()
+            {
+                var mentors = await _userService.GetAllMentorsAsync();
+                return Ok(mentors);
+            }
+
 
         [HttpDelete("mentor")]
         public async Task<ActionResult<User>> DeleteMentor(int mentorId)

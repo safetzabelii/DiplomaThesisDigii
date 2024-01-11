@@ -4,6 +4,7 @@ using DiplomaThesisDigitalization.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaThesisDigitalization.Migrations
 {
     [DbContext(typeof(ThesisDbContext))]
-    partial class ThesisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240111011109_wellYESSSSSSSS")]
+    partial class wellYESSSSSSSS
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -428,8 +431,8 @@ namespace DiplomaThesisDigitalization.Migrations
                         .IsRequired();
 
                     b.HasOne("DiplomaThesisDigitalization.Models.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("DiplomaThesisDigitalization.Models.Entities.Student", "Id")
+                        .WithMany()
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -13,8 +13,8 @@
         public string Role { get; set; }
         public string Status { get; set; }
         public string Availability { get; set; }
-        public string Department { get; set; }
-        public string Field { get; set; }
+        public int DepartmentId { get; set; }
+        public int FieldId { get; set; }
 
     }
 }

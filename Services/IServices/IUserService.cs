@@ -12,6 +12,7 @@ namespace DiplomaThesisDigitalization.Services.IServices
         Task<List<StudentDTO>> GetAllStudentsAsync();
         Task DeleteStudent(int studentId);
         Task AddMentor(CreateMentorDTO mentorDTO);
+        Task<List<MentorDTO>> GetAllMentorsAsync();
         Task DeleteMentor(int mentorId);
         Task AddAdmin(CreateAdminDTO adminDTO);
         Task DeleteAdmin(int adminId);

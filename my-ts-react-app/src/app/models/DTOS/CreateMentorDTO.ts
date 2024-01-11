@@ -1,3 +1,6 @@
+import { Department } from "../Department";
+import { Field } from "../Field";
+
 export interface CreateMentorDTO {
     name: string;
     surname: string;
@@ -10,7 +13,9 @@ export interface CreateMentorDTO {
     role: string;
     status: string;
     availability: string;
-    department: string;
-    field: string;
+    department?: Department;
+    departmentId?: number;
+    field?: Field;
+    fieldId?: number;
   }
   

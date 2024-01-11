@@ -7,7 +7,9 @@ export interface Student {
   id: number;
   ects: number;
   degreeLevel: string;
-  user: User;
+  name: string;
+  surname: string;
+  email: string;
   diplomaThesisId: number | null;
   diplomaThesis: DiplomaThesis | null;
   fieldId: number;

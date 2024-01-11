@@ -59,6 +59,20 @@ export default class UserStore {
             throw error;
         }
     }
+
+    getStudents = async () => {
+        try {
+            const response = await agent.Users.getStudents(); 
+            runInAction(() => {
+               
+            });
+            return response; 
+        } catch (error) {
+            console.error("Error while fetching students", error);
+            // Handle error
+            throw error;
+        }
+    }
    
     deleteStudent = async (id: number) => {
         try {
@@ -80,6 +94,20 @@ export default class UserStore {
             });
         } catch (error) {
             console.error(error);
+            throw error;
+        }
+    }
+    
+    getMentors = async () => {
+        try {
+            const response = await agent.Users.getMentors(); 
+            runInAction(() => {
+
+            });
+            return response; 
+        } catch (error) {
+            console.error("Error while fetching mentors", error);
+            
             throw error;
         }
     }

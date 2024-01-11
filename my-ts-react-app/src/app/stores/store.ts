@@ -22,6 +22,7 @@ interface Store{
     mentorStore: MentorStore;
     administatorStore: AdministratorStore;
     
+    
 }
 
 export const store: Store = {

@@ -28,6 +28,7 @@ namespace DiplomaThesisDigitalization.Services
 
             return await repository.GetByCondition(a => a.Email == userEmail).FirstOrDefaultAsync();
         }
+        
 
         public async Task<User> GetUserFromId(int userId)
         {
@@ -116,6 +117,29 @@ namespace DiplomaThesisDigitalization.Services
             await _unitOfWork.Repository<Mentor>().CreateAsync(mentor);
             await _unitOfWork.CompleteAsync();
         }
+        public async Task<List<MentorDTO>> GetAllMentorsAsync()
+        {
+            var mentors = await _unitOfWork.Repository<Mentor>()
+                .GetAll()
+                .Include(m => m.User)
+                .Include(m => m.Fields)
+                .Include(m => m.Departments)
+                .ToListAsync();
+
+                    return mentors.Select(m => new MentorDTO
+                    {
+                        Id = m.Id,
+                        Name = m.User.Name,
+                        Surname = m.User.Surname,
+                        Email = m.User.Email,
+                        Phone = m.User.Phone,
+                        Status = m.Status,
+                        Availability = m.Availability,
+                        FieldIds = m.Fields.Select(f => f.Id).ToList(),
+                        DepartmentIds = m.Departments.Select(d => d.Id).ToList()
+
+                    }).ToList();
+        }
         public async Task DeleteMentor(int mentorId)
         {
             var user = await this.GetUserFromId(mentorId);
@@ -167,22 +191,25 @@ namespace DiplomaThesisDigitalization.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<List<StudentDTO>> GetAllStudentsAsync()
-{
-    var students = await _unitOfWork.Repository<Student>().GetAll().Include(s => s.User).ToListAsync();
-    
-    return students.Select(s => new StudentDTO
-    {
-        Id = s.Id,
-        Name = s.User.Name,
-        Surname = s.User.Surname,
-        Email = s.User.Email,
-        ECTS = s.ECTS,
-        DegreeLevel = s.DegreeLevel,
-        FieldId = s.FieldId,
-        DepartmentId = s.DepartmentId
-    }).ToList();
-}
+       public async Task<List<StudentDTO>> GetAllStudentsAsync()
+        {
+            var students = await _unitOfWork.Repository<Student>()
+                .GetAll()
+                .Include(s => s.User)
+                .ToListAsync();
+
+            return students.Select(s => new StudentDTO
+            {
+                Id = s.Id,
+                Name = s.User.Name,
+                Surname = s.User.Surname,
+                Email = s.User.Email,
+                ECTS = s.ECTS,
+                DegreeLevel = s.DegreeLevel,
+                FieldId = s.FieldId,
+                DepartmentId = s.DepartmentId
+            }).ToList();
+        }
 
 
 
