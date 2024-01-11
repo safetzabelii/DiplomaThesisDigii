@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import LoadingComponent from "../app/layout/LoadingComponent";
-import { useStore } from "../app/stores/store";
-import LayoutWithSidebar from "../app/layout/LayoutWithSidebar";
+import LoadingComponent from "../../app/layout/LoadingComponent";
+import { useStore } from "../../app/stores/store";
+import LayoutWithSidebar from "../../app/layout/LayoutWithSidebar";
 
 const FacultyPage = observer(() => {
     const { facultyStore, departmentStore } = useStore();

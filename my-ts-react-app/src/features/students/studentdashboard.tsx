@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import StudentStore from '../../app/stores/studentStore';
 import UserStore from '../../app/stores/userStore';
 import { Student } from '../../app/models/Student';
+import StudentRegister from './studentRegister';
 
 
 const StudentDashboard = observer(() => {
@@ -26,11 +27,16 @@ const StudentDashboard = observer(() => {
     //     fetchStudents();
     // }, [userStore]);
    
-    return (
-        <LayoutWithSidebar>
-         <div className="student-dashboard p-6">
-            <h1 className="text-3xl font-bold mb-6">Student Dashboard</h1>
 
+    return (
+         <LayoutWithSidebar>
+            <div className="student-dashboard p-6">
+                <h1 className="text-3xl font-bold mb-6">Student Dashboard</h1>
+
+                <section className="register-student bg-white p-4 rounded-lg shadow-md mb-6">
+                    <h2 className="text-2xl font-semibold mb-4">Register New Student</h2>
+                    <StudentRegister />
+                </section>
             <section className="student-list bg-white p-4 rounded-lg shadow-md">
                     <h2 className="text-2xl font-semibold mb-4">All Students</h2>
                     <ul>

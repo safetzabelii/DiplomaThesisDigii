@@ -39,6 +39,21 @@ const SideNavbar: React.FC = () => {
                         <span>Faculty</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/department" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Department</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/field" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Field</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/title" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Title</span>
+                    </a>
+                </li>
             </ul>
             
             <div className="flex justify-center px-4 mb-4 mt-auto">

@@ -12,8 +12,8 @@ export interface CreateStudentDTO {
   address: string;
   ects: number;
   degreeLevel: string;
-  fieldId: number;
-  field: Field;
-  departmentId: number;
-  department: Department;
+  fieldId?: number;
+  field?: Field;
+  departmentId?: number;
+  department?: Department;
 }

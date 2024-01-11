@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 export interface Field{
     id: number;
     fieldName: string;
-    departmentId: number;
+    departmentId: number | null;
 }
 
 
@@ -36,24 +36,24 @@ export default class FieldStore {
         }
     }
 
-    // createField = async (fieldName: string, departmentId: number) => {
-    //     this.submitting = true;
-    //     try {
-    //         const field = { fieldName, departmentId };
-    //         const newField = await agent.Fields.create(field);
-    //         runInAction(() => {
-    //             if (newField) {
-    //                 this.fieldRegistry.set(newField.id, newField);
-    //             }
-    //             this.submitting = false;
-    //         });
-    //         toast.success('Field created successfully');
-    //     } catch (error) {
-    //         runInAction(() => this.submitting = false);
-    //         toast.error('Error creating field');
-    //         console.error(error);
-    //     }
-    // }
+    createField = async (fieldName: string, departmentId: number) => {
+        this.submitting = true;
+        try {
+            const field = { fieldName, departmentId };
+            const newField = await agent.Fields.create(field);
+            runInAction(() => {
+                if (newField) {
+                    this.fieldRegistry.set(newField.id, newField);
+                }
+                this.submitting = false;
+            });
+            toast.success('Field created successfully');
+        } catch (error) {
+            runInAction(() => this.submitting = false);
+            toast.error('Error creating field');
+            console.error(error);
+        }
+    }
 
 
 
