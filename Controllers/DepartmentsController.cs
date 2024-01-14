@@ -12,10 +12,12 @@ namespace DiplomaThesisDigitalization.Controllers
     {
         private readonly IDepartmentService _departmentService;
 
+
         public DepartmentsController(IDepartmentService departmentService)
         {
             _departmentService = departmentService;
         }
+
 
         [HttpGet("departments")]
         public async Task<IActionResult> GetAllDepartments()
@@ -24,6 +26,7 @@ namespace DiplomaThesisDigitalization.Controllers
             return Ok(departments);
         }
 
+
         [HttpGet("departments/{facultyId}")]
         public async Task<IActionResult> GetDepartmentsByFaculty(int facultyId)
         {
@@ -31,12 +34,14 @@ namespace DiplomaThesisDigitalization.Controllers
             return Ok(departments);
         }
 
+
         [HttpPost("department")]
         public async Task<IActionResult> CreateDepartment(CreateDepartmentDTO departmentDTO)
         {
                 await _departmentService.CreateDepartment(departmentDTO);
                 return Ok();
         }
+
 
         [HttpDelete("department")]
         public async Task<IActionResult> DeleteDepartment(int departmentId)
