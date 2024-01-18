@@ -9,6 +9,7 @@ namespace DiplomaThesisDigitalization.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+    
         private readonly IStudentService _studentService;
         public StudentController(IStudentService studentService)
         {
@@ -23,6 +24,7 @@ namespace DiplomaThesisDigitalization.Controllers
             {
                 return BadRequest("No logged user");
             }
+
 
             try
             {
@@ -44,6 +46,7 @@ namespace DiplomaThesisDigitalization.Controllers
             {
                 return BadRequest("No logged user");
             }
+
 
             try
             {
