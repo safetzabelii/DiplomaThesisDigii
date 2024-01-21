@@ -8,6 +8,7 @@ namespace DiplomaThesisDigitalization.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+    
         private readonly IStudentService _studentService;
 
         public StudentController(IStudentService studentService)
@@ -53,6 +54,7 @@ namespace DiplomaThesisDigitalization.Controllers
                 return BadRequest("No logged user");
             }
 
+
             try
             {
                 await _studentService.SubmitThesisApplication(jwt, applicationDTO.titleName, applicationDTO.mentorId);
@@ -72,6 +74,7 @@ namespace DiplomaThesisDigitalization.Controllers
             {
                 return BadRequest("No logged user");
             }
+
 
             try
             {
