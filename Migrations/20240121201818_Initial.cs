@@ -25,19 +25,6 @@ namespace DiplomaThesisDigitalization.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fields",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FieldName = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fields", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -81,26 +68,6 @@ namespace DiplomaThesisDigitalization.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Titles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TitleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FieldId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Titles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Titles_Fields_FieldId",
-                        column: x => x.FieldId,
-                        principalTable: "Fields",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Administrators",
                 columns: table => new
                 {
@@ -138,37 +105,22 @@ namespace DiplomaThesisDigitalization.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
+                name: "Fields",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    ECTS = table.Column<int>(type: "int", nullable: false),
-                    DegreeLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiplomaThesisId = table.Column<int>(type: "int", nullable: true),
-                    FieldId = table.Column<int>(type: "int", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FieldName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Fields", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Students_Departments_DepartmentId",
+                        name: "FK_Fields_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Students_Fields_FieldId",
-                        column: x => x.FieldId,
-                        principalTable: "Fields",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Students_Users_Id",
-                        column: x => x.Id,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -220,18 +172,72 @@ namespace DiplomaThesisDigitalization.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    ECTS = table.Column<int>(type: "int", nullable: false),
+                    DegreeLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiplomaThesisId = table.Column<int>(type: "int", nullable: true),
+                    FieldId = table.Column<int>(type: "int", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Students_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Students_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Titles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TitleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FieldId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Titles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Titles_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DiplomaTheses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SubmissionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SubmissionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Assessment = table.Column<byte>(type: "tinyint", nullable: true),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MentorId = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: true),
-                    TitleId = table.Column<int>(type: "int", nullable: false)
+                    MentorId = table.Column<int>(type: "int", nullable: false),
+                    TitleID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,8 +254,8 @@ namespace DiplomaThesisDigitalization.Migrations
                         principalTable: "Students",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_DiplomaTheses_Titles_TitleId",
-                        column: x => x.TitleId,
+                        name: "FK_DiplomaTheses_Titles_TitleID",
+                        column: x => x.TitleID,
                         principalTable: "Titles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -304,14 +310,19 @@ namespace DiplomaThesisDigitalization.Migrations
                 filter: "[StudentId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiplomaTheses_TitleId",
+                name: "IX_DiplomaTheses_TitleID",
                 table: "DiplomaTheses",
-                column: "TitleId");
+                column: "TitleID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FieldMentor_MentorsId",
                 table: "FieldMentor",
                 column: "MentorsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fields_DepartmentId",
+                table: "Fields",
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_DepartmentId",
@@ -357,13 +368,13 @@ namespace DiplomaThesisDigitalization.Migrations
                 name: "Titles");
 
             migrationBuilder.DropTable(
-                name: "Departments");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Fields");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "Faculties");

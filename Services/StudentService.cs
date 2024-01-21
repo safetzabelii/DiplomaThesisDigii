@@ -14,11 +14,28 @@ namespace DiplomaThesisDigitalization.Services
             _unitOfWork = unitOfWork;
             _authenticationService = authenticationService;
         }
-        public async Task SubmitThesisApplication(string jwt, string titleName, int mentorId)
-        {
-            var loggedUser = _authenticationService.LoggedUser(jwt).Result;
+        public async Task<int?> GetCurrentThesisId(string jwt)
+            {
+                var loggedUser = await _authenticationService.LoggedUser(jwt);
 
-            if(loggedUser is null || loggedUser.Role != "Student")
+                if (loggedUser is null || loggedUser.Role != "Student")
+                {
+                    throw new Exception("Duhet qasur studenti per te shfaqur temen e diplomes aktuale");
+                }
+
+                var student = await _unitOfWork.Repository<Student>().GetByCondition(a => a.Id == loggedUser.Id).FirstOrDefaultAsync();
+
+                var currentThesis = await _unitOfWork.Repository<DiplomaThesis>()
+                    .GetById(dt => dt.StudentId == student.Id)
+                    .FirstOrDefaultAsync();
+
+                return currentThesis?.Id;
+            }
+        public async Task<int> SubmitThesisApplication(string jwt, string titleName, int mentorId)
+        {
+            var loggedUser = await _authenticationService.LoggedUser(jwt);
+
+            if (loggedUser is null || loggedUser.Role != "Student")
             {
                 throw new Exception("Duhet qasur studenti per te kryer aplikimin e temes se diplomes");
             }
@@ -27,55 +44,69 @@ namespace DiplomaThesisDigitalization.Services
 
             var mentor = await _unitOfWork.Repository<Mentor>().GetById(a => a.Id == mentorId).FirstOrDefaultAsync();
             var title = await _unitOfWork.Repository<Title>().GetByCondition(a => a.TitleName == titleName).FirstOrDefaultAsync();
-            if(title is null)
+            if (title is null)
             {
                 throw new Exception("Ky titull nuk ekziston");
             }
-            if(mentor is null)
+            if (mentor is null)
             {
                 throw new Exception("Mentori me kete ID nuk ekziston");
             }
 
-            if(title.FieldId != student.FieldId)
+            if (title.FieldId != student.FieldId)
             {
                 throw new Exception("Fusha e temes se zgjedhur te diplomes duhet te jete e njejte me specializimin e studentit");
             }
-            if (!mentor.Fields.Contains(title.Field))
+            if (mentor.Fields.Any(f => f.Id == title.FieldId))
             {
                 throw new Exception("Mentori duhet te jete i specializuar ne fushen e kesaj teme te diplomes");
+            }
+
+            var existingThesis = await _unitOfWork.Repository<DiplomaThesis>()
+                                    .GetByCondition(dt => dt.StudentId == student.Id)
+                                    .FirstOrDefaultAsync();
+            if (existingThesis != null)
+            {
+                throw new Exception("Studenti ka nje teme te diplomes ne proces");
             }
 
             DiplomaThesis tema = new DiplomaThesis
             {
                 StudentId = student.Id,
-                MentorId= mentorId,
-                TitleID= title.Id,
+                MentorId = mentorId,
+                TitleID = title.Id,
                 Assessment = null,
                 DueDate = null,
-                SubmissionDate= null,
+                SubmissionDate = null,
                 Level = student.DegreeLevel
             };
+
             await _unitOfWork.Repository<DiplomaThesis>().CreateAsync(tema);
             await _unitOfWork.SaveAsync();
+
+            return tema.Id;
         }
-        public async Task CancelThesisApplication(string jwt, int thesisApplicationId)
-        {
-            var loggedUser = _authenticationService.LoggedUser(jwt).Result;
 
-            if (loggedUser is null || loggedUser.Role != "Student")
+        public async Task<int?> CancelThesisApplication(string jwt, int thesisApplicationId)
             {
-                throw new Exception("Duhet qasur studenti per te anuluar aplikimin e temes se diplomes");
-            }
+                var loggedUser = _authenticationService.LoggedUser(jwt).Result;
 
-            var thesisApplication = await _unitOfWork.Repository<DiplomaThesis>().GetById(a => a.Id == thesisApplicationId).FirstOrDefaultAsync();
-            
-            if(thesisApplication is null)
-            {
-                throw new Exception("Aplikacioni i temese se diplomes me kete ID nuk ekziston");
-            }
+                if (loggedUser is null || loggedUser.Role != "Student")
+                {
+                    throw new Exception("Duhet qasur studenti per te anuluar aplikimin e temes se diplomes");
+                }
 
-            _unitOfWork.Repository<DiplomaThesis>().Delete(thesisApplication);
-            await _unitOfWork.SaveAsync();
-        }
+                var thesisApplication = await _unitOfWork.Repository<DiplomaThesis>().GetById(a => a.Id == thesisApplicationId).FirstOrDefaultAsync();
+                        
+                if(thesisApplication is null)
+                {
+                    throw new Exception("Aplikacioni i temese se diplomes me kete ID nuk ekziston");
+                }
+
+                _unitOfWork.Repository<DiplomaThesis>().Delete(thesisApplication);
+                await _unitOfWork.SaveAsync();
+
+                return thesisApplication.Id;
+            }
     }
 }

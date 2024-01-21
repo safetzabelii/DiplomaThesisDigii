@@ -8,8 +8,8 @@ namespace DiplomaThesisDigitalization.Models.Entities
     {
         public Mentor()
         {
-            this.Fields = new HashSet<Field>();
-            this.Departments = new HashSet<Department>();
+            Fields = new HashSet<Field>();
+            Departments = new HashSet<Department>();
         }
         [Key, ForeignKey("User")]
         public int Id { get; set; }

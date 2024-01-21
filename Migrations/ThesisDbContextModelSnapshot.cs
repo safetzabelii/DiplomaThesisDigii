@@ -428,8 +428,8 @@ namespace DiplomaThesisDigitalization.Migrations
                         .IsRequired();
 
                     b.HasOne("DiplomaThesisDigitalization.Models.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("DiplomaThesisDigitalization.Models.Entities.Student", "Id")
+                        .WithMany()
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

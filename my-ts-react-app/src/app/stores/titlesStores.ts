@@ -22,7 +22,6 @@ export default class TitleStore {
                 });
                 this.loadingInitial = false;
             });
-            toast.success('Titles loaded successfully');
         } catch (error) {
             runInAction(() => this.loadingInitial = false);
             toast.error('Error loading titles');

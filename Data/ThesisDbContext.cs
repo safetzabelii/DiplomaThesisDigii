@@ -23,14 +23,9 @@ namespace DiplomaThesisDigitalization.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>()
-                .HasOne<DiplomaThesis>(s => s.DiplomaThesis)
-                .WithOne(dt => dt.Student)
-                .HasForeignKey<DiplomaThesis>(dt => dt.StudentId);
-
-            modelBuilder.Entity<Student>()
-                .HasOne<User>(s => s.User)
-                .WithOne()
-                .HasForeignKey<Student>(s => s.Id);
+            .HasOne<DiplomaThesis>(s => s.DiplomaThesis)
+            .WithOne(dt => dt.Student)
+            .HasForeignKey<DiplomaThesis>(dt => dt.StudentId);
 
         }
     }

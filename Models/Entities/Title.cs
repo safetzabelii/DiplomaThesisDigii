@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace DiplomaThesisDigitalization.Models.Entities
 {
@@ -6,7 +7,8 @@ namespace DiplomaThesisDigitalization.Models.Entities
     {
         public int Id { get; set; }
         public string TitleName { get; set; }
-        public int FieldId { get; set; }
+        [JsonIgnore]
         public Field Field { get; set; }
+        public int FieldId { get; set; }
     }
 }

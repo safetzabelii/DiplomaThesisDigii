@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaThesisDigitalization.Migrations
 {
     [DbContext(typeof(ThesisDbContext))]
-    [Migration("20230209221420_Initial")]
+    [Migration("20240121201818_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -132,10 +132,10 @@ namespace DiplomaThesisDigitalization.Migrations
                     b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SubmissionDate")
+                    b.Property<DateTime?>("SubmissionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TitleId")
+                    b.Property<int>("TitleID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -146,7 +146,7 @@ namespace DiplomaThesisDigitalization.Migrations
                         .IsUnique()
                         .HasFilter("[StudentId] IS NOT NULL");
 
-                    b.HasIndex("TitleId");
+                    b.HasIndex("TitleID");
 
                     b.ToTable("DiplomaTheses");
                 });
@@ -176,11 +176,16 @@ namespace DiplomaThesisDigitalization.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FieldName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Fields");
                 });
@@ -380,7 +385,7 @@ namespace DiplomaThesisDigitalization.Migrations
 
                     b.HasOne("DiplomaThesisDigitalization.Models.Entities.Title", "Title")
                         .WithMany()
-                        .HasForeignKey("TitleId")
+                        .HasForeignKey("TitleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -389,6 +394,15 @@ namespace DiplomaThesisDigitalization.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Title");
+                });
+
+            modelBuilder.Entity("DiplomaThesisDigitalization.Models.Entities.Field", b =>
+                {
+                    b.HasOne("DiplomaThesisDigitalization.Models.Entities.Department", "Department")
+                        .WithMany("Fields")
+                        .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("DiplomaThesisDigitalization.Models.Entities.Mentor", b =>
@@ -457,6 +471,8 @@ namespace DiplomaThesisDigitalization.Migrations
 
             modelBuilder.Entity("DiplomaThesisDigitalization.Models.Entities.Department", b =>
                 {
+                    b.Navigation("Fields");
+
                     b.Navigation("Students");
                 });
 

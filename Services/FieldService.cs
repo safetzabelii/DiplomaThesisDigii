@@ -44,7 +44,10 @@ namespace DiplomaThesisDigitalization.Services
         {
             var repository = _unitOfWork.Repository<Field>();
 
-            return await repository.GetAll().ToListAsync();
+            return await _unitOfWork.Repository<Field>()
+                .GetAll()
+                .Include(f => f.Titles) 
+                .ToListAsync();
         }
 
         public async Task<List<User>> GetMentorsFromField(string fieldName)

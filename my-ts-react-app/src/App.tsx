@@ -12,6 +12,10 @@ import PublicRoute from './app/layout/PublicRoute';
 import DepartmentPage from './features/departments/departmentPage';
 import TitleDashboard from './features/titles/titleDashboard';
 import FieldDashboard from './features/fields/fieldDashboard';
+import SubmitApplicationForm from './features/application/SubmitApplicationForm';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
@@ -20,6 +24,10 @@ function App() {
 
 
   return (
+    <div>
+      
+      <ToastContainer/>
+
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -32,11 +40,14 @@ function App() {
         <Route path="/department" element={<PrivateRoute><DepartmentPage/></PrivateRoute>} />
         <Route path="/title" element={<PrivateRoute><TitleDashboard/></PrivateRoute>} />
         <Route path="/field" element={<PrivateRoute><FieldDashboard/></PrivateRoute>} />
+        <Route path='/application' element={<PrivateRoute><SubmitApplicationForm/></PrivateRoute>} />
         <Route path="*" element={<div>Page not found</div>} />
-        
 
       </Routes>
     </Router>
+
+    </div>
+
   );
 }
 

@@ -1,10 +1,11 @@
 import axios from "axios";
 import { makeAutoObservable, runInAction } from "mobx";
 import { LoginDTO } from "../models/DTOS/LoginDTO";
+import { User } from "../models/User";
 
 export default class AuthenticationStore {
     isLoggedIn = false;
-    loggedUser = null;
+    loggedUser: User | null = null;
    
 
     constructor() {

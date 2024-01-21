@@ -35,7 +35,10 @@ export default class FieldStore {
             console.error(error);
         }
     }
-
+    getFields = () => {
+        return Array.from(this.fieldRegistry.values());
+    }
+    
     createField = async (fieldName: string, departmentId: number) => {
         this.submitting = true;
         try {

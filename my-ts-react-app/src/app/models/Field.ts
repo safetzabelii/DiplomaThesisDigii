@@ -7,8 +7,8 @@ export interface Field {
     id: number;
     fieldName: string;
     departmentId: number | null;
-    department: Department | null;
-    students: Student[];
-    titles: Title[];
-    mentors: Mentor[];
+    department?: Department | null;
+    students?: Student;
+    titles?: Title;
+    mentors?: Mentor;
   }

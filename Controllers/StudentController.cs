@@ -1,7 +1,6 @@
-﻿using DiplomaThesisDigitalization.Services;
-using DiplomaThesisDigitalization.Services.IServices;
-using Microsoft.AspNetCore.Http;
+﻿using DiplomaThesisDigitalization.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
+using DiplomaThesisDigitalization.Models.DTOs;
 
 namespace DiplomaThesisDigitalization.Controllers
 {
@@ -10,13 +9,43 @@ namespace DiplomaThesisDigitalization.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
+
         public StudentController(IStudentService studentService)
         {
             _studentService = studentService;
         }
+        
+        [HttpGet("current-thesis")]
+            public async Task<IActionResult> GetCurrentThesisId()
+            {
+                var jwt = Request.Cookies["jwt"];
+                if (jwt == null)
+                {
+                    return BadRequest("No logged user");
+                }
+
+                try
+                {
+                    var thesisId = await _studentService.GetCurrentThesisId(jwt);
+                    
+                    if (thesisId != null)
+                    {
+                        return Ok(thesisId);
+                    }
+                    else
+                    {
+                        return NotFound("No current thesis");
+                    }
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    return Unauthorized(ex.Message);
+                }
+            }
+        
 
         [HttpPost("submitapplication")]
-        public async Task<IActionResult> SubmitThesisApplication(string titleName, int mentorId)
+        public async Task<IActionResult> SubmitThesisApplication([FromBody] CreateApplicationDTO applicationDTO)
         {
             var jwt = Request.Cookies["jwt"];
             if (jwt == null)
@@ -26,7 +55,7 @@ namespace DiplomaThesisDigitalization.Controllers
 
             try
             {
-                await _studentService.SubmitThesisApplication(jwt, titleName, mentorId);
+                await _studentService.SubmitThesisApplication(jwt, applicationDTO.titleName, applicationDTO.mentorId);
                 return Ok();
             }
             catch (UnauthorizedAccessException ex)
@@ -35,8 +64,7 @@ namespace DiplomaThesisDigitalization.Controllers
             }
         }
 
-
-        [HttpDelete("cancelapplication")]
+        [HttpDelete("cancelapplication/{thesisApplicationId}")]
         public async Task<IActionResult> CancelThesisApplication(int thesisApplicationId)
         {
             var jwt = Request.Cookies["jwt"];
@@ -55,5 +83,6 @@ namespace DiplomaThesisDigitalization.Controllers
                 return Unauthorized(ex.Message);
             }
         }
+        
     }
 }

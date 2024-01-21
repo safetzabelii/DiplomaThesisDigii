@@ -13,8 +13,7 @@ import { Field } from '../models/Field';
 import { Title } from '../models/Title';
 import { DiplomaThesis } from '../models/DiplomaThesis';
 import { ConsultationSchedule } from '../models/ConsultationSchedule';
-import { CreateAdminDTO } from '../models/DTOS/CreateAdminDTO';
-
+import { CreateApplciationDTO } from '../models/DTOS/CreateApplicationDTO';
 
 interface ErrorResponseData {
     errors?: { [key: string]: string[] };
@@ -103,8 +102,10 @@ const Administrators = {
 };
 
 const Students = {
-    submitApplication: (titleName: string, mentorId: number) => requests.post<void>('/Student/submitapplication', { titleName, mentorId }),
+    submitApplication: (application: CreateApplciationDTO) => requests.post<void>('/Student/submitapplication', application),
     cancelApplication: (applicationId: number) => requests.del<void>(`/Student/cancelapplication/${applicationId}`),
+    getCurrentThesisId: () => requests.get<number>('/Student/current-thesis'),
+
 };
 
 const Titles = {
@@ -157,6 +158,10 @@ const Authentication = {
     getLoggedUser: () => requests.get<any>('/Authentication/logged-user'),
     logout: () => requests.post<void>('/Authentication/logout', {}),
 };
+
+
+
+
 
 
 
