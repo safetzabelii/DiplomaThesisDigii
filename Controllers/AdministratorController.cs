@@ -22,7 +22,20 @@ namespace DiplomaThesisDigitalization.Controllers
                 return BadRequest("No logged user");
             }
          */
-
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllThesis()
+        {
+            try
+            {
+                var theses = await _administratorService.GetAllThesis();
+                return Ok(theses);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error getting all thesis applications: {ex.Message}");
+            }
+        }
+        
         [HttpPut("approve/{thesisApplicationId}")]
         public async Task<IActionResult> ApproveDiplomaThesisApplication(int thesisApplicationId)
         {

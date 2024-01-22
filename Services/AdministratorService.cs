@@ -14,6 +14,14 @@ namespace DiplomaThesisDigitalization.Services
             _unitOfWork = unitOfWork;
             _authenticationService = authenticationService;
         }
+         public async Task<IEnumerable<DiplomaThesis>> GetAllThesis()
+        {
+            var thesisApplications = await _unitOfWork.Repository<DiplomaThesis>()
+                .GetAll()
+                .ToListAsync();
+
+            return thesisApplications;
+        }
 
         public async Task ApproveDiplomaThesisApplication(string jwt, int thesisApplicationId)
         {
