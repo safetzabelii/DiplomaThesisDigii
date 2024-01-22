@@ -75,25 +75,6 @@ const SubmitApplicationForm = () => {
         }
     };
 
-    const handleCancel = async () => {
-        if (!currentThesisId) {
-            toast.error('There is no current thesis ID');
-            return;
-        }
-
-        try {
-            const success = await studentStore.cancelApplication();
-            if (success) {
-                toast.success('Application cancelled successfully');
-                setCurrentThesisId(null);
-            } else {
-                toast.error('Cancellation failed');
-            }
-        } catch (error) {
-            console.error("Cancellation error", error);
-            toast.error('Error cancelling the application');
-        }
-    };
     
 
     return (
@@ -149,17 +130,6 @@ const SubmitApplicationForm = () => {
                             </button>
                         </div>
                     </form>
-                    {currentThesisId && (
-                        <div className="flex justify-end mt-4">
-                            <button
-                                type="button"
-                                onClick={handleCancel}
-                                className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white font-bold rounded focus:outline-none focus:shadow-outline transition duration-300"
-                            >
-                                Cancel Application
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
         </LayoutWithSidebar>

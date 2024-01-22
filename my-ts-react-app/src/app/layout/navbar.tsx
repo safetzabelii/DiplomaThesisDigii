@@ -55,8 +55,13 @@ const SideNavbar: React.FC = () => {
                     </a>
                 </li>
                 <li>
-                    <a href="/application" className="flex items-center p-4 hover:bg-gray-700">
-                        <span>Application</span>
+                    <a href="/Submitapplication" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Submit Application</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Cancelapplication" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Cancel Application</span>
                     </a>
                 </li>
             </ul>

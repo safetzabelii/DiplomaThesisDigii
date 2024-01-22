@@ -14,7 +14,7 @@ namespace DiplomaThesisDigitalization.Services
             _unitOfWork = unitOfWork;
             _authenticationService = authenticationService;
         }
-        public async Task<int?> GetCurrentThesisId(string jwt)
+            public async Task<int?> GetCurrentThesisId(string jwt)
             {
                 var loggedUser = await _authenticationService.LoggedUser(jwt);
 
@@ -31,6 +31,43 @@ namespace DiplomaThesisDigitalization.Services
 
                 return currentThesis?.Id;
             }
+            public async Task<CurrentThesisDTO> GetCurrentThesis(string jwt)
+            {
+                var loggedUser = await _authenticationService.LoggedUser(jwt);
+                if (loggedUser is null || loggedUser.Role != "Student")
+                {
+                    throw new Exception("Only students can access current thesis details.");
+                }
+
+                var student = await _unitOfWork.Repository<Student>()
+                            .GetByCondition(a => a.Id == loggedUser.Id)
+                            .FirstOrDefaultAsync();
+               
+
+                var currentThesis = await _unitOfWork.Repository<DiplomaThesis>()
+                                .GetByCondition(dt => dt.StudentId == student.Id)
+                                .Include(dt => dt.Title)
+                                .Include(dt => dt.Mentor)
+                                .FirstOrDefaultAsync();
+                if (currentThesis == null)
+                {
+                    return null;
+                }
+
+                return  new CurrentThesisDTO
+                {
+                    Id = currentThesis.Id,
+                    TitleName = currentThesis.Title?.TitleName,
+                    MentorName =currentThesis.Mentor?.User?.Name,
+                    DueDate = currentThesis.DueDate,
+                    SubmissionDate = currentThesis.SubmissionDate,
+                    Assessment = currentThesis.Assessment,
+                    Level = currentThesis.Level,
+                    StudentName = currentThesis.Student.User.Name,
+                    
+                };
+            }
+        
         public async Task<int> SubmitThesisApplication(string jwt, string titleName, int mentorId)
         {
             var loggedUser = await _authenticationService.LoggedUser(jwt);

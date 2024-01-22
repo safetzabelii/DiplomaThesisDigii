@@ -24,16 +24,29 @@ export default class StudentStore {
     
     getCurrentThesisId = async () => {
         try {
-            const thesisId = await agent.Students.getCurrentThesisId();
+            const thesisid = await agent.Students.getCurrentThesisId();
             runInAction(() => {
-                this.setCurrentThesisId(thesisId);
+                this.setCurrentThesisId(thesisid);
             });
-            return thesisId;
+            return thesisid;
         } catch (error) {
             console.log(error);
             return null;
         }
     }
+    getCurrentThesis = async () => {
+        try {
+            const thesis = await agent.Students.getCurrentThesis();
+            runInAction(() => {
+                this.setCurrentThesis(thesis);
+            });
+            return thesis; 
+        } catch (error) {
+            console.error("Error fetching current thesis", error);
+            return null;
+        }
+    }
+
     
 
     submitApplication = async (application: CreateApplciationDTO) => {
@@ -60,15 +73,15 @@ export default class StudentStore {
     
 
     cancelApplication = async () => {
-        const thesisId = this.currentThesisId;
+        const thesisid = this.currentThesisId;
     
-        if (!thesisId) {
+        if (!thesisid) {
             return false;
         }
     
         this.submitting = true;
         try {
-            await agent.Students.cancelApplication(thesisId);
+            await agent.Students.cancelApplication(thesisid);
             runInAction(() => {
                 this.submitting = false;
                 this.setCurrentThesisId(null); 

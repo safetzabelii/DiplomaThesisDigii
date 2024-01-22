@@ -104,8 +104,8 @@ const Administrators = {
 const Students = {
     submitApplication: (application: CreateApplciationDTO) => requests.post<void>('/Student/submitapplication', application),
     cancelApplication: (applicationId: number) => requests.del<void>(`/Student/cancelapplication/${applicationId}`),
-    getCurrentThesisId: () => requests.get<number>('/Student/current-thesis'),
-
+    getCurrentThesisId: () => requests.get<number>('/Student/current-thesis-id'),
+    getCurrentThesis: () => requests.get<any>('/Student/current-thesis'),
 };
 
 const Titles = {

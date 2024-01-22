@@ -22,6 +22,7 @@ namespace DiplomaThesisDigitalization.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.Entity<Student>()
             .HasOne<DiplomaThesis>(s => s.DiplomaThesis)
             .WithOne(dt => dt.Student)

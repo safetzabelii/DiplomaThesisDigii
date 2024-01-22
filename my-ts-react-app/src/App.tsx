@@ -15,6 +15,7 @@ import FieldDashboard from './features/fields/fieldDashboard';
 import SubmitApplicationForm from './features/application/SubmitApplicationForm';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CancelApplication from './features/application/CancelApplication';
 
 
 
@@ -40,7 +41,9 @@ function App() {
         <Route path="/department" element={<PrivateRoute><DepartmentPage/></PrivateRoute>} />
         <Route path="/title" element={<PrivateRoute><TitleDashboard/></PrivateRoute>} />
         <Route path="/field" element={<PrivateRoute><FieldDashboard/></PrivateRoute>} />
-        <Route path='/application' element={<PrivateRoute><SubmitApplicationForm/></PrivateRoute>} />
+        <Route path='/Submitapplication' element={<PrivateRoute><SubmitApplicationForm/></PrivateRoute>} />
+        <Route path='/Cancelapplication' element={<PrivateRoute><CancelApplication/></PrivateRoute>} />
+
         <Route path="*" element={<div>Page not found</div>} />
 
       </Routes>

@@ -17,32 +17,61 @@ namespace DiplomaThesisDigitalization.Controllers
         }
         
         [HttpGet("current-thesis")]
-            public async Task<IActionResult> GetCurrentThesisId()
+        public async Task<IActionResult> GetCurrentThesis()
+        {
+            var jwt = Request.Cookies["jwt"];
+            if (jwt == null)
             {
-                var jwt = Request.Cookies["jwt"];
-                if (jwt == null)
-                {
-                    return BadRequest("No logged user");
-                }
+                return BadRequest("No logged user");
+            }
 
-                try
+            try
+            {
+                var currentThesis = await _studentService.GetCurrentThesis(jwt);
+                
+                if (currentThesis != null)
                 {
-                    var thesisId = await _studentService.GetCurrentThesisId(jwt);
-                    
-                    if (thesisId != null)
-                    {
-                        return Ok(thesisId);
-                    }
-                    else
-                    {
-                        return NotFound("No current thesis");
-                    }
+                    return Ok(currentThesis);
                 }
-                catch (UnauthorizedAccessException ex)
+                else
                 {
-                    return Unauthorized(ex.Message);
+                    return NotFound("No current thesis");
                 }
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
+        [HttpGet("current-thesis-id")]
+        public async Task<IActionResult> GetCurrentThesisId()
+        {
+            var jwt = Request.Cookies["jwt"];
+            if (jwt == null)
+            {
+                return BadRequest("No logged user");
+            }
+
+            try
+            {
+                var thesisId = await _studentService.GetCurrentThesisId(jwt);
+                
+                if (thesisId != null)
+                {
+                    return Ok(thesisId);
+                }
+                else
+                {
+                    return NotFound("No current thesis ID");
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
+
+
         
 
         [HttpPost("submitapplication")]
