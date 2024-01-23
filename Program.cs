@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using DiplomaThesisDigitalization.Data;
 using DiplomaThesisDigitalization.Data.UnitOfWork;
 using DiplomaThesisDigitalization.Helpers;
@@ -32,6 +33,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ThesisDbContext>(options =>
                     options.UseSqlServer(builder.Configuration.GetConnectionString("ThesisDbConnectionString")));
 var app = builder.Build();
+
+
+
 
 
 // Configure the HTTP request pipeline.

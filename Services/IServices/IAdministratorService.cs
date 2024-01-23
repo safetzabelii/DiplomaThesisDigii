@@ -5,7 +5,7 @@ namespace DiplomaThesisDigitalization.Services.IServices
 {
     public interface IAdministratorService
     {
-        Task<IEnumerable<DiplomaThesis>> GetAllThesis();
+        Task<IEnumerable<DiplomaThesisDTO>> GetAllThesis();
         Task ApproveDiplomaThesisApplication(string jwt, int thesisApplicationId);
         Task RemoveDiplomaThesisApplication(string jwt, int thesisApplicationId);
         Task DiplomaThesisSubmitted(string jwt, int thesisApplicationId);

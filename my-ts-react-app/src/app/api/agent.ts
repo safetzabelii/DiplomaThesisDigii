@@ -95,6 +95,7 @@ const Faculties = {
     delete: (id: number) => requests.del<void>(`/Faculties/faculty/${id}`),
 };
 const Administrators = {
+    getAllThesis: () => requests.get<Administrator[]>(`/Administrator/all`),
     approveThesis: (thesisApplicationId: number) => requests.put<void>(`/Administrator/approve/${thesisApplicationId}`, {}),
     submitThesis: (thesisApplicationId: number) => requests.put<void>(`/Administrator/submitted/${thesisApplicationId}`, {}),
     removeThesis: (thesisApplicationId: number) => requests.del<void>(`/Administrator/remove/${thesisApplicationId}`),

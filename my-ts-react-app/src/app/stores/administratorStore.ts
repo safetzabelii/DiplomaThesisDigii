@@ -8,6 +8,18 @@ export default class AdministratorStore {
     constructor(){
         makeAutoObservable(this);
     }
+    getAllThesis = async () => {
+        this.setSubmitting(true);
+        try {
+            const theses = await agent.Administrators.getAllThesis();
+            this.setSubmitting(false);
+            return theses; 
+        } catch (error) {
+            this.setSubmitting(false);
+            toast.error('Error getting all theses');
+            console.error(error);
+        }
+    }
 
     approveThesisApplication = async (thesisApplicationId: number) => {
         this.submitting = true;
@@ -67,6 +79,9 @@ export default class AdministratorStore {
             toast.error('Error setting thesis due date');
             console.error(error);
         }
+    }
+    setSubmitting = (value: boolean) => {
+        this.submitting = value;
     }
 
 }
