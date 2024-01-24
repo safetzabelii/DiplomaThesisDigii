@@ -17,6 +17,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CancelApplication from './features/application/CancelApplication';
 import ApproveApplication from './features/admins/approveApplication';
+import SubmitThesis from './features/admins/submitThesis';
+import DeleteThesis from './features/admins/deleteThesis';
 
 
 
@@ -45,6 +47,10 @@ function App() {
         <Route path='/Submitapplication' element={<PrivateRoute><SubmitApplicationForm/></PrivateRoute>} />
         <Route path='/Cancelapplication' element={<PrivateRoute><CancelApplication/></PrivateRoute>} />
         <Route path='/Approveapplication' element={<PrivateRoute><ApproveApplication/></PrivateRoute>} />
+        <Route path='/SubmitThesis' element={<PrivateRoute><SubmitThesis/></PrivateRoute>} />
+        <Route path='/DeleteThesis' element={<PrivateRoute><DeleteThesis/></PrivateRoute>} />
+
+
 
 
         <Route path="*" element={<div>Page not found</div>} />

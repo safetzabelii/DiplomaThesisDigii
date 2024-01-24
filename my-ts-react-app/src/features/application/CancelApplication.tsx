@@ -2,15 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useStore } from '../../app/stores/store';
 import LayoutWithSidebar from '../../app/layout/LayoutWithSidebar';
+import { Dimmer, Loader, Segment } from 'semantic-ui-react'; 
 
 const CancelApplication = () => {
     const { studentStore } = useStore();
     const [currentThesisId, setCurrentThesisId] = useState<number | null>(null);
-    const [currentThesis, setCurrentThesis] = useState<any>(null); 
+    const [currentThesis, setCurrentThesis] = useState<any>(null);
+    const [cancellingApplication, setCancellingApplication] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true); 
 
     useEffect(() => {
         const loadCurrentThesisId = async () => {
             try {
+                setLoading(true); 
                 const id = await studentStore.getCurrentThesisId();
                 setCurrentThesisId(id);
                 if (id) {
@@ -20,6 +24,8 @@ const CancelApplication = () => {
             } catch (error) {
                 console.error("Failed to fetch current thesis ID", error);
                 toast.error("Failed to load current thesis ID");
+            } finally {
+                setLoading(false); 
             }
         };
 
@@ -33,17 +39,20 @@ const CancelApplication = () => {
         }
 
         try {
+            setCancellingApplication(true); 
             const success = await studentStore.cancelApplication();
             if (success) {
                 toast.success('Application cancelled successfully');
                 setCurrentThesisId(null);
-                setCurrentThesis(null); 
+                setCurrentThesis(null);
             } else {
                 toast.error('Cancellation failed');
             }
         } catch (error) {
             console.error("Cancellation error", error);
             toast.error('Error cancelling the application');
+        } finally {
+            setCancellingApplication(false); 
         }
     };
 
@@ -52,7 +61,23 @@ const CancelApplication = () => {
             <div className="flex justify-center items-center h-screen bg-gray-100 p-4">
                 <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-6">
                     <h2 className="text-xl font-semibold text-gray-700 mb-6">Cancel Application</h2>
-                    {currentThesis ? (
+                    {loading ? (
+                        <div className="flex items-center justify-center h-32">
+                            <Segment>
+                                <Dimmer active>
+                                    <Loader size="big">Loading</Loader>
+                                </Dimmer>
+                            </Segment>
+                        </div>
+                    ) : cancellingApplication ? (
+                        <div className="flex items-center justify-center h-32">
+                            <Segment>
+                                <Dimmer active>
+                                    <Loader size="big">Cancelling application, please wait...</Loader>
+                                </Dimmer>
+                            </Segment>
+                        </div>
+                    ) : currentThesis ? (
                         <div>
                             <p className="mb-4">
                                 <strong>Thesis Title:</strong> {currentThesis.titleName}

@@ -26,16 +26,13 @@ const ApproveApplication: React.FC = () => {
     }, [administratorStore]);
 
     const handleApprove = async (thesisApplicationId: number) => {
-        // Optimistically set the thesis as approved
         setTheses(theses.map((thesis: any) =>
             thesis.id === thesisApplicationId ? { ...thesis, isApproved: true } : thesis
         ));
     
         try {
             await administratorStore.approveThesisApplication(thesisApplicationId);
-            // After a successful API call, you may want to update the dueDate or other properties based on the response
         } catch (e) {
-            // If the API call fails, revert the isApproved property
             setTheses(theses.map((thesis: any) =>
                 thesis.id === thesisApplicationId ? { ...thesis, isApproved: false } : thesis
             ));
@@ -44,51 +41,53 @@ const ApproveApplication: React.FC = () => {
     };
 
     const isApproved = (thesis: any) => {
-        // Check if the thesis has been marked as approved during the current session
         return thesis.isApproved || (thesis.dueDate && new Date(thesis.dueDate) > new Date());
     };
 
     return (
         <LayoutWithSidebar>
-            <div className="p-4 bg-gray-100">
-                {theses && theses.length > 0 ? (
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                       {theses.map((thesis: any) => (
-                                <Card key={thesis.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                                    <Card.Content>
-                                    <Card.Header className="font-semibold text-xl">
-                                        Thesis #{thesis.id}
-                                    </Card.Header>
-                                    <Card.Meta className="text-gray-600">
-                                        {thesis.level} - {thesis.titleName}
-                                    </Card.Meta>
-                                    <Card.Description>
-                                        <p className="text-gray-800 mt-2">
-                                            <strong>Student:</strong> {thesis.studentName}
-                                        </p>
-                                        <p className="text-gray-800">
-                                            <strong>Mentor:</strong> {thesis.mentorName}
-                                        </p>
-                                    </Card.Description>
-                                </Card.Content>
-                               <Card.Content extra>
-                               <Button
+        <div className="p-4 bg-gray-100">
+            {loading ? ( 
+                <Loader active inline="centered">
+                    Loading Thesis...
+                </Loader>
+            ) : theses && theses.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                   {theses.map((thesis: any) => (
+                        <div key={thesis.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div className="p-6">
+                                <h2 className="text-2xl font-semibold mb-2">Thesis #{thesis.id}</h2>
+                                <p className="text-gray-600 mb-4">
+                                    {thesis.level} - {thesis.titleName}
+                                </p>
+                                <div className="mb-4">
+                                    <strong>Student:</strong> {thesis.studentName}
+                                </div>
+                                <div>
+                                    <strong>Mentor:</strong> {thesis.mentorName}
+                                </div>
+                            </div>
+                            <div className="p-4 bg-gray-200 border-t border-gray-300">
+                                <Button
                                     onClick={() => handleApprove(thesis.id)}
-                                    className={`w-full text-white ${isApproved(thesis) ? 'bg-gray-400' : 'bg-green-500 hover:bg-green-600'} focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50`}
+                                    className={`w-full ${
+                                        isApproved(thesis)
+                                            ? 'bg-gray-400 cursor-not-allowed'
+                                            : 'bg-green-500 hover:bg-green-600'
+                                    } text-white rounded-full py-2`}
                                     disabled={isApproved(thesis)}
                                 >
                                     {isApproved(thesis) ? 'Approved' : 'Approve'}
                                 </Button>
-
-                                </Card.Content>
-                            </Card>
-                            ))}
-                    </div>
-                ) : (
-                    <p className="text-center text-gray-600">No theses available for approval.</p>
-                )}
-            </div>
-        </LayoutWithSidebar>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p className="text-center text-gray-600">No theses available for approval.</p>
+            )}
+        </div>
+    </LayoutWithSidebar>
     );
 };
 

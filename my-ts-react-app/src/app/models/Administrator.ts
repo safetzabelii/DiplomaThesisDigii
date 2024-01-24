@@ -4,4 +4,5 @@ export interface Administrator {
   id: number;
   Type: string;
   User: User;
+  dueDate: string | null;
 }

@@ -66,7 +66,17 @@ const SideNavbar: React.FC = () => {
                 </li>
                 <li>
                     <a href="/Approveapplication" className="flex items-center p-4 hover:bg-gray-700">
-                        <span>Approve Application</span>
+                        <span>Approve Thesis</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/SubmitThesis" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Submit Thesis</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/DeleteThesis" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Delete Thesis</span>
                     </a>
                 </li>
             </ul>
