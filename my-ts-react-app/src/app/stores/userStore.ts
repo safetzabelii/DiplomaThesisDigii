@@ -15,7 +15,7 @@ export default class UserStore {
         makeAutoObservable(this);
     }
 
-    fetchCurrentUserr = async () => {
+    async fetchCurrentUserr() { // Remove the "async" keyword from the arrow function
         try {
             const user = await agent.Authentication.getLoggedUser();
             runInAction(() => {

@@ -1,12 +1,21 @@
 // SideNavbar.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStore } from '../stores/store';
 import { useNavigate } from 'react-router-dom';
+import userStore from '../stores/userStore';
+import { Link } from 'react-router-dom';
 
 const SideNavbar: React.FC = () => {
-    const { authenticationStore } = useStore();
+    const { authenticationStore, userStore } = useStore();
     const navigate = useNavigate();
     const [isLoggingOut, setIsLoggingOut] = useState(false); 
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            await userStore.fetchCurrentUserr();
+        };
+        fetchUserData();
+    }, [userStore]);
 
 
     const handleLogout = () => {
@@ -15,6 +24,7 @@ const SideNavbar: React.FC = () => {
         setTimeout(() => {
           navigate('/');
           setIsLoggingOut(false); 
+          window.location.reload();
         }, 1000); 
       };
 
@@ -24,61 +34,73 @@ const SideNavbar: React.FC = () => {
                 <h1 className="text-2xl font-semibold">Digi-Thesis</h1>
             </div>
             <ul className="flex flex-col flex-1 py-4">
+            { userStore.currentUser?.role === 'Admin' && (
+                <>
                 <li>
-                    <a href="/student" className="flex items-center p-4 hover:bg-gray-700">
-                        <span>Student</span>
-                    </a>
+                <Link to="/student" className="flex items-center p-4 hover:bg-gray-700">
+                <span>Student</span>
+                </Link>
                 </li>
                 <li>
-                    <a href="/mentor" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/mentor" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Mentor</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/faculty" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/faculty" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Faculty</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/department" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/department" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Department</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/field" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/field" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Field</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/title" className="flex items-center p-4 hover:bg-gray-700">
+                <Link to="/title" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Title</span>
-                    </a>
+                    </Link>
                 </li>
+                </>
+                )}
+                {userStore.currentUser?.role === 'Student' && (
+                <>
                 <li>
-                    <a href="/Submitapplication" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/Submitapplication" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Submit Application</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/Cancelapplication" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/Cancelapplication" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Cancel Application</span>
-                    </a>
+                    </Link>
                 </li>
+                </>
+                )}
+                 {userStore.currentUser?.role === 'Admin' && (
+                <>
                 <li>
-                    <a href="/Approveapplication" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/Approveapplication" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Approve Thesis</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/SubmitThesis" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/SubmitThesis" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Submit Thesis</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/DeleteThesis" className="flex items-center p-4 hover:bg-gray-700">
+                    <Link to="/DeleteThesis" className="flex items-center p-4 hover:bg-gray-700">
                         <span>Delete Thesis</span>
-                    </a>
+                    </Link>
                 </li>
+                </>
+                )}
             </ul>
             
             <div className="flex justify-center px-4 mb-4 mt-auto">

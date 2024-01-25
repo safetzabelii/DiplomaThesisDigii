@@ -6,17 +6,19 @@ import { User } from "../models/User";
 export default class AuthenticationStore {
     isLoggedIn = false;
     loggedUser: User | null = null;
+    loadingUser = false;
    
-
     constructor() {
         makeAutoObservable(this);
     }
+    
     loggedUserr = async () => {
         try {
-            const response = await axios.get('/Authentication/logged-user');
-            if (response && response.data) {
-                this.loggedUser = response.data;
+            const token = localStorage.getItem("jwt");
+            if (token) {
+                
                 this.isLoggedIn = true;
+              
             }
         } catch (error) {
             console.error("Failed to get logged user", error);
@@ -27,31 +29,32 @@ export default class AuthenticationStore {
 
     login = async (creds: LoginDTO) => {
         try {
-            const response = await axios.post('/Authentication/login', creds, { withCredentials: true });
-
-            if (response && response.data) {
+            this.loadingUser = true; // Set loading state to true
+            const response = await axios.post('/Authentication/login', creds);
+            if (response && response.data && response.data.token) {
+                const token = response.data.token;
+                localStorage.setItem("jwt", token);
                 this.isLoggedIn = true;
-                this.loggedUser = response.data;
-                 }
+                
+                // Fetch user details here...
+                // After fetching, set loadingUser to false
+                this.loadingUser = false;
+            }
         } catch (error) {
             console.error("Login failed", error);
             this.isLoggedIn = false;
             this.loggedUser = null;
+            this.loadingUser = false; // Reset loading state on error
         }
     }
 
     logout = async () => {
         try {
-            await axios.post('/Authentication/logout', {}, { withCredentials: true });
+            localStorage.removeItem("jwt");
             this.isLoggedIn = false;
             this.loggedUser = null;
         } catch (error) {
             console.error("Logout failed", error);
         }
     }
-    
-    
-    
 }
-
-    

@@ -59,6 +59,7 @@ const SubmitThesis: React.FC = () => {
     };
 
     return (
+        
         <LayoutWithSidebar>
             <div className="p-4 bg-gray-100">
                 {loading ? ( 

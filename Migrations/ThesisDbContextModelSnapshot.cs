@@ -127,6 +127,7 @@ namespace DiplomaThesisDigitalization.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("StudentId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("SubmissionDate")
@@ -140,8 +141,7 @@ namespace DiplomaThesisDigitalization.Migrations
                     b.HasIndex("MentorId");
 
                     b.HasIndex("StudentId")
-                        .IsUnique()
-                        .HasFilter("[StudentId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("TitleID");
 
@@ -378,7 +378,9 @@ namespace DiplomaThesisDigitalization.Migrations
 
                     b.HasOne("DiplomaThesisDigitalization.Models.Entities.Student", "Student")
                         .WithOne("DiplomaThesis")
-                        .HasForeignKey("DiplomaThesisDigitalization.Models.Entities.DiplomaThesis", "StudentId");
+                        .HasForeignKey("DiplomaThesisDigitalization.Models.Entities.DiplomaThesis", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DiplomaThesisDigitalization.Models.Entities.Title", "Title")
                         .WithMany()

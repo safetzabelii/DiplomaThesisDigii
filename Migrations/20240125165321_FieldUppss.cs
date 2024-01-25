@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DiplomaThesisDigitalization.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class FieldUppss : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -235,7 +235,7 @@ namespace DiplomaThesisDigitalization.Migrations
                     SubmissionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Assessment = table.Column<byte>(type: "tinyint", nullable: true),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: true),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
                     MentorId = table.Column<int>(type: "int", nullable: false),
                     TitleID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -252,7 +252,8 @@ namespace DiplomaThesisDigitalization.Migrations
                         name: "FK_DiplomaTheses_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DiplomaTheses_Titles_TitleID",
                         column: x => x.TitleID,
@@ -306,8 +307,7 @@ namespace DiplomaThesisDigitalization.Migrations
                 name: "IX_DiplomaTheses_StudentId",
                 table: "DiplomaTheses",
                 column: "StudentId",
-                unique: true,
-                filter: "[StudentId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DiplomaTheses_TitleID",

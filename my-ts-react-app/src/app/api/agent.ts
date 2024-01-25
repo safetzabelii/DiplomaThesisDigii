@@ -25,9 +25,15 @@ const sleep = (delay: number) => {
     });
     }
 
-axios.defaults.baseURL = 'https://localhost:7076/api';
+    axios.defaults.baseURL = 'https://localhost:7076/api';
 
-axios.defaults.withCredentials = true;
+    const token = localStorage.getItem("jwt");
+    if (token) {
+        axios.defaults.headers.common["jwt"] = `Bearer ${token}`;
+    }
+    
+    axios.defaults.withCredentials = true;
+    
 
 axios.interceptors.request.use(config => {
    const token = store.commonStore.getToken();
