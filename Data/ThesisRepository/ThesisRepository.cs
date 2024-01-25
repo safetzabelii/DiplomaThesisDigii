@@ -16,10 +16,13 @@ namespace DiplomaThesisDigitalization.Data.ThesisRepository
             return _dbContext.Set<TEntity>().Where(expression);
         }
 
+         // Get all entities of type TEntity
         public IQueryable<TEntity> GetAll()
         {
             return _dbContext.Set<TEntity>();
         }
+
+        
         public IQueryable<TEntity> GetById(Expression<Func<TEntity, bool>> expression)
         {
             return _dbContext.Set<TEntity>().Where(expression);
@@ -33,13 +36,18 @@ namespace DiplomaThesisDigitalization.Data.ThesisRepository
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
         }
+        
+        // Delete an existing entity
         public void Delete(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
         }
+        
+        // Update an existing entity
         public void Update(TEntity entity)
         {
             _dbContext.Set<TEntity>().Update(entity);
         }
+        
     }
 }
