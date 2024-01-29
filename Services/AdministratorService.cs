@@ -15,28 +15,28 @@ namespace DiplomaThesisDigitalization.Services
             _authenticationService = authenticationService;
         }
         public async Task<IEnumerable<DiplomaThesisDTO>> GetAllThesis()
-{
-    var thesisApplications = await _unitOfWork.Repository<DiplomaThesis>()
-        .GetAll()
-        .Include(t => t.Student)
-        .Include(t => t.Mentor)
-        .Include(t => t.Title)
-        .Select(t => new DiplomaThesisDTO
         {
-            Id = t.Id,
-            DueDate = t.DueDate,
-            SubmissionDate = t.SubmissionDate,
-            Assessment = t.Assessment,
-            Level = t.Level,
-            StudentName = t.Student.User.Name,
-            MentorName = t.Mentor.User.Name,   
-            TitleName = t.Title.TitleName,  
-        })
-        .AsNoTrackingWithIdentityResolution()
-        .ToListAsync();
+            var thesisApplications = await _unitOfWork.Repository<DiplomaThesis>()
+                .GetAll()
+                .Include(t => t.Student)
+                .Include(t => t.Mentor)
+                .Include(t => t.Title)
+                .Select(t => new DiplomaThesisDTO
+                {
+                    Id = t.Id,
+                    DueDate = t.DueDate,
+                    SubmissionDate = t.SubmissionDate,
+                    Assessment = t.Assessment,
+                    Level = t.Level,
+                    StudentName = t.Student.User.Name,
+                    MentorName = t.Mentor.User.Name,   
+                    TitleName = t.Title.TitleName,  
+                })
+                .AsNoTrackingWithIdentityResolution()
+                .ToListAsync();
 
-    return thesisApplications;
-}
+            return thesisApplications;
+        }
 
         public async Task ApproveDiplomaThesisApplication(string jwt, int thesisApplicationId)
         {

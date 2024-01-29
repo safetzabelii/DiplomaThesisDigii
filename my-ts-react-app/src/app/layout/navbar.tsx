@@ -101,8 +101,18 @@ const SideNavbar: React.FC = () => {
                 </li>
                 </>
                 )}
-            </ul>
             
+            {userStore.currentUser?.role === 'Mentor' && (
+                <>
+                <li>
+                    <Link to="/AssessThesis" className="flex items-center p-4 hover:bg-gray-700">
+                        <span>Assess Thesis</span>
+                    </Link>
+                    </li>
+                </>
+                )}
+            
+            </ul>
             <div className="flex justify-center px-4 mb-4 mt-auto">
                         <button
                     onClick={handleLogout}

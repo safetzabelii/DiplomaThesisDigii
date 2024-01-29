@@ -1,6 +1,7 @@
 import agent from "../api/agent";
 import { makeAutoObservable, runInAction } from "mobx";
 import { Faculty } from "../models/Faculty";
+import { CreateFacultyDTO } from "../models/DTOS/CreateFacultyDTO";
 
 export default class FacultyStore {
     facultyRegistry = new Map<number, Faculty>();
@@ -44,38 +45,43 @@ export default class FacultyStore {
         this.loadingInitial = state;
     }
 
-    createFaculty = async (facultyName: string) => {
+    createFaculty = async (createDTO: CreateFacultyDTO) => {
         this.loading = true;
         try {
-            await agent.Faculties.create(facultyName);
+            await agent.Faculties.create(createDTO.facultyName);
             runInAction(() => {
                 this.loadFaculties();
                 this.editMode = false;
                 this.loading = false;
             });
         } catch (error) {
-            console.error(error);
+            console.error("Error creating faculty:", error);
             runInAction(() => {
                 this.loading = false;
             });
         }
-    }
+    };
+    
+    
+    
 
-    deleteFaculty = async (facultyId: number) => {
+    deleteFaculty = async () => {
         this.loading = true;
         try {
-            await agent.Faculties.delete(facultyId);
-            runInAction(() => {
-                this.facultyRegistry.delete(facultyId);
-                this.loading = false;
-            });
+          await agent.Faculties.delete;
+          runInAction(() => {
+            this.loading = false;
+            this.loadFaculties(); // Reload faculties after deletion
+          });
         } catch (error) {
-            console.error(error);
-            runInAction(() => {
-                this.loading = false;
-            });
+          console.error("Error deleting faculty:", error);
+          runInAction(() => {
+            this.loading = false;
+          });
         }
-    }
+      };
+      
+
 
     private setFaculty = (faculty: Faculty) => {
         this.facultyRegistry.set(faculty.id, faculty);

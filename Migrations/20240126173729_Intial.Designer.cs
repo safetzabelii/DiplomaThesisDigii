@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaThesisDigitalization.Migrations
 {
     [DbContext(typeof(ThesisDbContext))]
-    [Migration("20240125165321_FieldUppss")]
-    partial class FieldUppss
+    [Migration("20240126173729_Intial")]
+    partial class Intial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

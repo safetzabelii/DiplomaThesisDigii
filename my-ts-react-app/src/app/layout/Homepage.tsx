@@ -27,9 +27,9 @@ const Homepage = observer(() => {
       if (isLoading) {
         fetchData();
       } else {
-        clearInterval(refreshInterval); // Stop refreshing when data is available
+        clearInterval(refreshInterval); 
       }
-    }, 5000); // Adjust the refresh interval as needed (e.g., every 5 seconds)
+    }, 5000); 
     
     return () => clearInterval(refreshInterval);
   }, [isLoading]);
@@ -39,7 +39,7 @@ const Homepage = observer(() => {
       <div className="flex h-screen bg-gray-100">
         <div className="m-auto bg-white rounded-lg shadow p-8">
           {isLoading ? (
-            <div>Loading...</div> // Render loading indicator
+            <div>Loading...</div> 
           ) : (
             <>
               <h1 className="text-4xl font-bold text-gray-800 mb-6">Welcome to the Dashboard, {userStore.currentUser?.name}</h1>

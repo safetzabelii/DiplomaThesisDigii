@@ -8,5 +8,6 @@
         Task RemoveField(string jwt, int fieldId);
         Task AddDepartment(string jwt, int departmentId);
         Task RemoveDepartment(string jwt, int departmentId);
+        Task<IEnumerable<DiplomaThesisDTO>> GetAllThesisMentor(string jwt);
     }
 }

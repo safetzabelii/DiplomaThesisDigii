@@ -97,8 +97,8 @@ const requests = {
 
 const Faculties = {
     getAll: () => requests.get<any[]>('/Faculties/faculties'),
-    create: (facultyName: string) => requests.post<void>('/Faculties/faculty', { name: facultyName }),
-    delete: (id: number) => requests.del<void>(`/Faculties/faculty/${id}`),
+    create: (facultyName: string) => requests.post<void>('/Faculties/faculty', { facultyName }),
+    delete: (facultyName: string) => requests.del<void>(`/Faculties/faculty/${facultyName}`),
 };
 const Administrators = {
     getAllThesis: () => requests.get<Administrator[]>(`/Administrator/all`),
@@ -122,8 +122,6 @@ const Titles = {
     delete: (titleName: string) => requests.del<void>(`/Titles/${titleName}`),
 };
 
-
-
 const Departments = {
     getAll: () => requests.get<any[]>('/Departments/departments'),
     getByFaculty: (facultyId: number) => requests.get<any>(`/Departments/departments/${facultyId}`),
@@ -136,8 +134,10 @@ const Mentors = {
     removeDepartment: (departmentId: number) => requests.del<void>(`/Mentor/departments/${departmentId}`),
     addField: (fieldId: number) => requests.put<void>(`/Mentor/fields/${fieldId}`, {}),
     removeField: (fieldId: number) => requests.del<void>(`/Mentor/fields/${fieldId}`),
-    assessDiplomaThesis: (diplomaThesisId: number, assessment: number) => requests.put<void>(`/Mentor/assessDiplomaThesis/${diplomaThesisId}`, { assessment }),
+    assessDiplomaThesis: (diplomaThesisId:number, assessment:number) => 
+        requests.put<void>(`/Mentor/assessDiplomaThesis/${diplomaThesisId}`, { assessment }),
     setAvailability: (availability: string) => requests.put<void>(`/Mentor/availability`, { availability }),
+    getAllThesisMentor: () => requests.get<Mentor[]>(`/Mentor/thesis`),
 };
 
 

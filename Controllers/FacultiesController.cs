@@ -1,49 +1,49 @@
-﻿using DiplomaThesisDigitalization.Services;
+﻿using DiplomaThesisDigitalization.Models.DTOs;
+using DiplomaThesisDigitalization.Models.Entities;
+using DiplomaThesisDigitalization.Services;
 using DiplomaThesisDigitalization.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaThesisDigitalization.Controllers
 {
-    // Përcakto rrugën dhe vendos që kontrolleri të sillet si një API kontroller
     [Route("api/[controller]")]
     [ApiController]
     public class FacultiesController : ControllerBase
     {
-        // Injektim i varësisë (Dependency) për shërbimin e Fakultetit
         private readonly IFacultyService _facultyService;
 
-        // Konstruktori për të inicializuar shërbimin e Fakultetit
         public FacultiesController(IFacultyService facultyService)
         {
             _facultyService = facultyService;
         }
 
-        // Metodë HTTP POST për të krijuar një fakultet të ri
-        [HttpPost("faculty")]
-        public async Task<IActionResult> CreateFaculty(string facultyName)
+       [HttpPost("faculty")]
+        public async Task<ActionResult> CreateFaculty([FromBody] CreateFacultyDTO facultyDTO)
         {
-                // Krijo një fakultet të ri duke përdorur shërbimin e fakultetit dhe kthe përgjigje HTTP OK
-                await _facultyService.CreateFaculty(facultyName);
-                return Ok();
+            if (facultyDTO == null || string.IsNullOrWhiteSpace(facultyDTO.facultyName))
+            {
+                return BadRequest("Invalid faculty data");
+            }
+
+            await _facultyService.CreateFaculty(facultyDTO.facultyName);
+            return Ok();
         }
 
-        // Metodë HTTP GET për të marrë të gjitha fakultetet
+
         [HttpGet("faculties")]
         public async Task<IActionResult> GetAllFaculties()
         {
-                // Merr të gjitha fakultetet duke përdorur shërbimin e fakultetit dhe kthe si përgjigje HTTP OK
                 var faculties = await _facultyService.GetAllFaculties();
                 return Ok(faculties);
         }
 
-        // Metodë HTTP DELETE për të fshirë një fakultet sipas emrit të tij
         [HttpDelete("faculty")]
-        public async Task<IActionResult> DeleteFaculty(string facultyName)
+        public async Task<IActionResult> DeleteFaculty([FromBody] string facultyName)
         {
-                // Fshi një fakultet duke përdorur shërbimin e fakultetit dhe kthe përgjigje HTTP OK
-                await _facultyService.DeleteFaculty(facultyName);
-                return Ok();
+            await _facultyService.DeleteFaculty(facultyName);
+            return Ok();
         }
+
     }
 }

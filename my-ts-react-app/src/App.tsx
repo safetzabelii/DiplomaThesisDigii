@@ -19,6 +19,7 @@ import CancelApplication from './features/application/CancelApplication';
 import ApproveApplication from './features/admins/approveApplication';
 import SubmitThesis from './features/admins/submitThesis';
 import DeleteThesis from './features/admins/deleteThesis';
+import AssessThesis from './features/mentors/assessThesis';
 
 
 
@@ -49,10 +50,7 @@ function App() {
         <Route path='/Approveapplication' element={<PrivateRoute><ApproveApplication/></PrivateRoute>} />
         <Route path='/SubmitThesis' element={<PrivateRoute><SubmitThesis/></PrivateRoute>} />
         <Route path='/DeleteThesis' element={<PrivateRoute><DeleteThesis/></PrivateRoute>} />
-
-
-
-
+        <Route path='AssessThesis' element={<PrivateRoute><AssessThesis/></PrivateRoute>} />
         <Route path="*" element={<div>Page not found</div>} />
 
       </Routes>

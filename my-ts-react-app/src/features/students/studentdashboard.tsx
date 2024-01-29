@@ -9,6 +9,7 @@ import userStore from '../../app/stores/userStore';
 const StudentDashboard = observer(() => {
     const UserStore = useState(new userStore())[0];
     const [students, setStudents] = useState<Student[]>([]);
+    
     useEffect(() => {
         UserStore.getStudents().then(fetchedStudents => {
             setStudents(fetchedStudents);
