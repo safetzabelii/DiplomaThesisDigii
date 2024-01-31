@@ -32,26 +32,26 @@ const SubmitThesis: React.FC = () => {
         };
         loadTheses();
     }, [administratorStore]);
-
     const handleThesisSubmission = async (thesis: any) => {
         try {
             if (thesis.dueDate !== null && !isThesisSubmitted(thesis.id)) {
                 await administratorStore.submitThesisApplication(thesis.id);
-
+                const submittedDate = new Date(); 
+    
                 localStorage.setItem(`thesis_${thesis.id}_submitted`, 'true');
-
+    
                 setTheses((prevTheses) =>
-                    prevTheses.map((prevThesis) =>
-                        prevThesis.id === thesis.id
-                            ? { ...prevThesis, isSubmitted: true, submissionDate: new Date().toLocaleString() }
-                            : prevThesis
-                    )
-                );
-            }
-        } catch (error) {
-            console.error('Error occurred while submitting the thesis application:', error);
+                prevTheses.map((prevThesis) =>
+                    prevThesis.id === thesis.id
+                        ? { ...prevThesis, isSubmitted: true, submissionDate: submittedDate }
+                        : prevThesis
+                )
+            );
         }
-    };
+    } catch (error) {
+        console.error('Error occurred while submitting the thesis application:', error);
+    }
+};
 
     const isThesisSubmitted = (thesisId: number) => {
         

@@ -26,7 +26,6 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   }, [authenticationStore]);
 
   if (isLoading) {
-    // Render a loading screen while waiting
     return <p>Loading...</p>
   }
 
